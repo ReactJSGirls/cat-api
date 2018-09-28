@@ -10,7 +10,7 @@ const getFiles = async (req, placeholder = false) => {
   const files = async placeholder =>
     await fg([IMAGE_BANK_SRC], {
       transform: entry =>
-        placeholder ? entry : fullUrl + entry.split("/cat-api")[1]
+        placeholder ? entry : `${fullUrl}/images${entry.split("/images")[1]}`
     })
 
   return files(placeholder)
