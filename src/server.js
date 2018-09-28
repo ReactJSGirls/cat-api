@@ -11,13 +11,15 @@ const IMAGE_BANK_SRC = path.resolve(__dirname, "images/**")
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
 
-const getFiles = async req => {
+const getFiles = async (req, placeholder = false) => {
   const fullUrl = req.protocol + "://" + req.get("host")
-  const files = await fg([IMAGE_BANK_SRC], {
-    transform: entry => fullUrl + entry.split("/build")[1]
-  })
+  const files = async placeholder =>
+    await fg([IMAGE_BANK_SRC], {
+      transform: entry =>
+        placeholder ? entry : fullUrl + entry.split("/build")[1]
+    })
 
-  return files
+  return files(placeholder)
 }
 
 const getRandom = (arr, n) => {
@@ -48,6 +50,13 @@ server
     res.json({
       cat: cats
     })
+  })
+  .get("/placeholder", async (req, res) => {
+    const files = await getFiles(req, true)
+    const randomIndex = Math.floor(Math.random() * files.length)
+    const cat = files[randomIndex]
+
+    res.sendFile(cat, { root: "/" })
   })
   .get("/cats/:length", async (req, res) => {
     const length = req.params.length

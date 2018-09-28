@@ -11,17 +11,13 @@ body {
   box-sizing: border-box;
 }
 
-.Home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+img {
+  width: 300px;
+  max-width: 90%;
+  margin-top: 20px;
 }
 
-html,
-body,
-#root,
-.Home {
+html, body, #root, .Home {
   height: 100%;
 }
 

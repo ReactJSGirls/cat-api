@@ -31,6 +31,21 @@ export default () => (
         </a>
       </code>
     </section>
+    <section>
+      <h3>Placeholder Image</h3>
+      <code>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://cat.reactjsgirls.com/placeholder"
+        >
+          https://cat.reactjsgirls.com/placeholder
+        </a>
+      </code>
+    </section>
+    <section>
+      <img src=" https://cat.reactjsgirls.com/placeholder" alt="Cat" />
+    </section>
     <h4>
       Kittens for all your needs{" "}
       <span role="img" aria-label="cat">
