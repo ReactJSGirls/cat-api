@@ -1,11 +1,11 @@
 import App from "./App"
 import React from "react"
-import fs from "fs"
 import path from "path"
 import { StaticRouter } from "react-router-dom"
 import express from "express"
 import { renderToString } from "react-dom/server"
 import fg from "fast-glob"
+import cors from "cors"
 
 const IMAGE_BANK_SRC = path.resolve(__dirname, "images/**")
 
@@ -36,6 +36,7 @@ const getRandom = (arr, n) => {
 }
 
 const server = express()
+server.use(cors())
 server
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
