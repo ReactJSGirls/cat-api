@@ -10,8 +10,8 @@ const expressPlayground = require('graphql-playground-middleware-express')
 const getFiles = require('./src/getFiles')
 const getRandom = require('./src/getRandom')
 
-const getOneCat = async req => {
-  const files = await getFiles(req)
+const getOneCat = async (req, placeholder = false) => {
+  const files = await getFiles(req, placeholder)
   const randomIndex = Math.floor(Math.random() * files.length)
   const cats = files[randomIndex]
 
@@ -67,7 +67,7 @@ app
     })
   )
   .get('/placeholder', async (req, res) => {
-    const cat = await getOneCat(req)
+    const cat = await getOneCat(req, true)
 
     res.sendFile(cat, { root: '/' })
   })
