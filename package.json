@@ -5,18 +5,31 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "format": "prettier --write '**/*.{js,css,md}'"
+    "format": "prettier --write '**/*.{js,css,md}'",
+    "lint": "eslint . --cache --fix",
+    "pretest": "npm run lint"
   },
   "now": {
     "alias": "https://cat.reactjsgirls.com"
   },
   "dependencies": {
+    "apollo-server-express": "1",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "fast-glob": "^2.2.2"
+    "fast-glob": "^2.2.2",
+    "graphql": "^14.0.2",
+    "graphql-playground-middleware-express": "^1.7.3",
+    "graphql-tools": "^4.0.0"
   },
   "devDependencies": {
-    "prettier": "^1.14.3",
-    "nodemon": "^1.18.4"
+    "eslint": "^5.6.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "nodemon": "^1.18.4",
+    "prettier": "^1.14.3"
   }
 }
