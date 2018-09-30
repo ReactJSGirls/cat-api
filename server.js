@@ -63,7 +63,7 @@ app
       req.params.length > files.length ? files.length : req.params.length
     const cats = getRandom(files, length)
 
-    if (length < 1 || !Number.isInteger(length)) {
+    if (length < 1 || !Number.isInteger(parseInt(length))) {
       res.status(500).send({ error: 'You need to ask for at least one cat' })
     }
 
