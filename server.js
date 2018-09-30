@@ -5,7 +5,9 @@ const bodyParser = require('body-parser')
 const { graphqlExpress } = require('apollo-server-express')
 const expressPlayground = require('graphql-playground-middleware-express')
   .default
+const { AUTO } = require('jimp')
 
+const transformImage = require('./src/transform-image')
 const getFiles = require('./src/getFiles')
 const getRandom = require('./src/getRandom')
 const schema = require('./src/graphQL-utils')
@@ -37,7 +39,6 @@ app.use(
 // GraphiQL, a visual editor for queries
 app.use('/graphiql', expressPlayground({ endpoint: '/graphql' }))
 app
-  .disable('x-powered-by')
   .get('/cat', async (req, res) =>
     res.json({
       cat: await getOneCat(req)
@@ -47,6 +48,21 @@ app
     const cat = await getOneCat(req, true)
 
     res.sendFile(cat, { root: '/' })
+  })
+  .get('/placeholder/:width', async (req, res) => {
+    const width = parseInt(req.params.width, 10)
+    const cat = await getOneCat(req)
+
+    return transformImage(cat, width, AUTO, res)
+  })
+
+  .get('/placeholder/:width/:height', async (req, res) => {
+    const width = parseInt(req.params.width, 10)
+    const height = parseInt(req.params.height, 10)
+
+    const cat = await getOneCat(req)
+
+    return transformImage(cat, width, height, res)
   })
   .get('/cats/:length', async (req, res) => {
     const files = await getFiles(req)
@@ -63,9 +79,9 @@ app
     })
   })
   .get('/', (_, res) => res.sendFile(index))
-  .get('/images/:file', (req, res) =>
+  .get('/images/:file', (req, res) => {
     res.sendFile(path.join(__dirname, req.path))
-  )
+  })
 
 app.listen(3000, () => console.log('Cat API is on http://localhost:3000/'))
 

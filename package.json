@@ -20,7 +20,8 @@
     "fast-glob": "^2.2.2",
     "graphql": "^14.0.2",
     "graphql-playground-middleware-express": "^1.7.3",
-    "graphql-tools": "^4.0.0"
+    "graphql-tools": "^4.0.0",
+    "jimp": "^0.5.3"
   },
   "devDependencies": {
     "eslint": "^5.6.1",
