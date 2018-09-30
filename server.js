@@ -9,16 +9,9 @@ const { AUTO } = require('jimp')
 
 const transformImage = require('./src/transform-image')
 const getFiles = require('./src/getFiles')
+const getOneCat = require('./src/getOneCat')
 const getRandom = require('./src/getRandom')
 const schema = require('./src/graphQL-utils')
-
-const getOneCat = async (req, placeholder = false) => {
-  const files = await getFiles(req, placeholder)
-  const randomIndex = Math.floor(Math.random() * files.length)
-  const cats = files[randomIndex]
-
-  return cats
-}
 
 const index = path.join(__dirname, 'src/index.html')
 
@@ -70,7 +63,7 @@ app
       req.params.length > files.length ? files.length : req.params.length
     const cats = getRandom(files, length)
 
-    if (length < 1) {
+    if (length < 1 || !Number.isInteger(length)) {
       res.status(500).send({ error: 'You need to ask for at least one cat' })
     }
 
@@ -84,7 +77,3 @@ app
   })
 
 app.listen(3000, () => console.log('Cat API is on http://localhost:3000/'))
-
-module.exports = {
-  getOneCat
-}

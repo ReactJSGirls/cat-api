@@ -1,7 +1,8 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const getRandom = require('./getRandom')
 const getFiles = require('./getFiles')
-const { getOneCat } = require('../server')
+const getOneCat = require('./getOneCat')
+
 const typeDefs = `
   type Query {
     # Get One Cat
@@ -23,10 +24,7 @@ const resolvers = {
   }
 }
 
-// Put together a schema
-const schema = makeExecutableSchema({
+module.exports = makeExecutableSchema({
   typeDefs,
   resolvers
 })
-
-module.exports = schema
