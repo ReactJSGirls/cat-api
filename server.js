@@ -3,12 +3,12 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const { graphqlExpress } = require('apollo-server-express')
-const { makeExecutableSchema } = require('graphql-tools')
 const expressPlayground = require('graphql-playground-middleware-express')
   .default
 
 const getFiles = require('./src/getFiles')
 const getRandom = require('./src/getRandom')
+const schema = require('./src/graphQL-utils')
 
 const getOneCat = async (req, placeholder = false) => {
   const files = await getFiles(req, placeholder)
@@ -18,30 +18,7 @@ const getOneCat = async (req, placeholder = false) => {
   return cats
 }
 
-const typeDefs = `
-  type Query {
-    # Get One Cat
-    cat: String,
-    # Get All The Cats
-    cats(length: Int): [String]
-  }
-`
-
-const resolvers = {
-  Query: {
-    cat: async (_, __, { req }) => getOneCat(req),
-    cats: async (_, { length }, { req }) => {
-      const files = await getFiles(req)
-      return getRandom(files, length)
-    }
-  }
-}
-
-// Put together a schema
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-})
+const index = path.join(__dirname, 'src/index.html')
 
 const app = express()
 app.use(express.static(path.join(__dirname, 'src')))
@@ -72,17 +49,26 @@ app
     res.sendFile(cat, { root: '/' })
   })
   .get('/cats/:length', async (req, res) => {
-    const length = req.params.length
     const files = await getFiles(req)
+    const length =
+      req.params.length > files.length ? files.length : req.params.length
     const cats = getRandom(files, length)
+
+    if (length < 1) {
+      res.status(500).send({ error: 'You need to ask for at least one cat' })
+    }
 
     res.json({
       cats
     })
   })
-  .get('/', (req, res) => res.sendFile(path.join(__dirname, 'src/index.html')))
+  .get('/', (_, res) => res.sendFile(index))
   .get('/images/:file', (req, res) =>
     res.sendFile(path.join(__dirname, req.path))
   )
 
 app.listen(3000, () => console.log('Cat API is on http://localhost:3000/'))
+
+module.exports = {
+  getOneCat
+}
