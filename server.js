@@ -51,7 +51,7 @@ app
   })
   .get('/placeholder/:width', async (req, res) => {
     const width = parseInt(req.params.width, 10)
-    const cat = await getOneCat(req)
+    const cat = await getOneCat(req, true)
 
     return transformImage(cat, width, AUTO, res)
   })
@@ -60,7 +60,7 @@ app
     const width = parseInt(req.params.width, 10)
     const height = parseInt(req.params.height, 10)
 
-    const cat = await getOneCat(req)
+    const cat = await getOneCat(req, true)
 
     return transformImage(cat, width, height, res)
   })
