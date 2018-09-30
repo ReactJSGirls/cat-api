@@ -12,7 +12,10 @@
     "cy:run": "cypress run"
   },
   "now": {
-    "alias": "https://cat.reactjsgirls.com"
+    "alias": [
+      "cat.reactjsgirls.com",
+      "catis.life"
+    ]
   },
   "dependencies": {
     "apollo-server-express": "1.4.0",
